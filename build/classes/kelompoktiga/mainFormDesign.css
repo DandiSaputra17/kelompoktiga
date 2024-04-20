@@ -1,0 +1,149 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 17, 2024, 4:37:56 PM
+    Author     : Lenovo
+*/
+
+.header{
+    -fx-background-color: #403233;
+}
+
+.gray_bg{
+    -fx-background-color: #DEDEDE;
+}
+
+.nav_form{
+    -fx-background-color: #c06e52;
+    -fx-border-color: black;
+    -fx-border-width: 0 0 3px 0;
+}
+
+.signoutbtn{
+    -fx-background-color: #c06e52;
+    -fx-padding: 5px;
+}
+
+.signoutbtn:hover{
+    -fx-background-color: #8C4D38;
+}
+
+.signoutbtn:focused{
+    -fx-background-color: #673221;
+}
+
+.nav_btn{
+    -fx-background-color: transparent;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #ffffff;
+    -fx-cursor: hand;
+}
+
+.nav_btn:hover{
+    -fx-background-color: #8C4D38;
+    -fx-border-width: 0;
+}
+
+.nav_btn:focused{
+    -fx-background-color: #673221;
+}
+
+.shadow{
+    -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.8), 10,0,0,0);
+}
+
+.white_bg{
+    -fx-background-color:  rgba(255,255,255,1);
+    
+    
+}
+
+.radius{
+    -fx-background-radius: 8px;
+}
+
+.padding{
+    -fx-padding: 5px;
+}
+
+.transparent{
+    -fx-background-color: transparent;
+}
+
+.card_form{
+    -fx-background-color: #c06e52;
+}
+
+.areachart{
+    -fx-text-fill: #ffffff;
+}
+
+.table-view{
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-border-color: #8c4d38;
+    -fx-border-radius: 5px;
+    -fx-border-width: 2px;
+    
+    
+}
+
+.table-view .column-header-background{
+    -fx-background-color: #673221;
+    -fx-background-insets: 0 0 0 0;
+    -fx-background-radius: 4px 4px 0 0;
+}
+
+.table-view .column-header, .filter{
+    -fx-background-color: transparent;
+    -fx-size: 40px;
+}
+
+.table-view .column-header .label{
+    -fx-text-fill: #ffffff;
+}
+
+.table-view:hover .column-header:hover .label:hover{
+    -fx-text-fill: #000;
+    -fx-background-color: #fbf2c0;
+    -fx-background-radius: 5px;
+}
+
+.btn{
+    -fx-background-color: #8c4d38;
+    -fx-text-fill: #ffffff;
+    -fx-cursor: hand;
+    -fx-font-size: 14px; 
+}
+
+.btn:hover{
+    -fx-background-color: #c06e52;
+}
+
+.textfield{
+    -fx-background-color: transparent;
+    -fx-border-color: #673221;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #000000;
+    -fx-border-width: 1.5px;
+}
+
+.textfield:focused{
+    -fx-border-color: #B16E34;
+}
+
+.createtextfield{
+    -fx-background-color: transparent;
+    -fx-border-color: #673221;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #ffffff;
+    -fx-border-width: 1.5px;
+}
+
+.createtextfield:focused{
+    -fx-border-color: #B16E34;
+}

@@ -1,0 +1,154 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 11, 2024, 11:14:22 PM
+    Author     : Lenovo
+*/
+
+.textfamily{
+    -fx-spacing: 10px;
+}
+
+.coffebackground{
+    -fx-background-color: #403233;
+}
+
+.headlabel{
+    -fx-border-color: #ffffff;
+    -fx-border-width: 0 0 0 3px;
+    -fx-padding: 0 0 0 5px;
+}
+
+.loginbtn{
+    -fx-background-color: #FF7700;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;    
+}
+
+.loginbtn:hover{
+    -fx-background-color: #A35200;
+}
+
+.textfield{
+    -fx-background-color: transparent;
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #ffffff;
+    -fx-border-width: 1.5px;
+}
+
+.textfield:focused{
+    -fx-border-color: #B16E34;
+}
+
+.createbtn{
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #FF7700;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1.5px;
+    -fx-font-size: 18px;
+}
+
+.createbtn:hover{
+    -fx-background-color: rgba(0,0,0, 0.5);
+    -fx-background-radius: 5px;
+    -fx-border-color: transparent;
+}
+
+.createbtn:focused{
+    -fx-background-color: rgba(0,0,0, 0.8);
+    -fx-background-radius: 5px;
+    -fx-border-color: transparent;
+}
+
+.comboboxsignup{
+    -fx-text-fill: #ffffff;
+    -fx-background-color: rgba(255,255,255, 0);
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 5px;
+}
+.comboboxsignup:focused{
+    -fx-text-fill: #ffffff;
+}
+
+.signupbackground{
+    -fx-background-color: #A35200;
+}
+
+.textlabeldua{
+    -fx-border-color: #000000;
+    -fx-border-width: 0 3px 0 3px;
+    -fx-padding: 0 5px 0 5px;
+}
+
+.haveaccount{
+    -fx-background-color: #FF7700;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;    
+}
+
+.haveaccount:hover{
+    -fx-background-color: #403233;
+}
+
+.createbackground{
+    -fx-background-color: #FF7700;
+}
+
+.createtextfield{
+    -fx-background-color: transparent;
+    -fx-border-color: #403233;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #ffffff;
+    -fx-border-width: 1.5px;
+}
+
+.createaccountbtn{
+    -fx-background-color: #403233;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;  
+}
+
+.textlabeltiga{
+    -fx-border-color: #403233;
+    -fx-border-width: 0 3px 0 3px;
+    -fx-padding: 0 5px 0 5px;
+}
+
+.createbtndua{
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #FF7700;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1.5px;
+    -fx-font-size: 16px;
+}
+
+.createbtndua:hover{
+    -fx-background-color: rgba(0,0,0, 0.5);
+    -fx-background-radius: 5px;
+    -fx-border-color: transparent;
+}
+
+.createbtndua:focused{
+    -fx-background-color: rgba(0,0,0, 0.8);
+    -fx-background-radius: 5px;
+    -fx-border-color: transparent;
+}
+
+.comboboxforgot{
+    -fx-color: #ffffff;
+    -fx-background-color: rgba(255,255,255, .3);
+    -fx-border-color: #ffffff;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 6px;
+}
