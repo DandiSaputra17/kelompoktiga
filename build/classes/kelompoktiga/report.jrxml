@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="226" pageHeight="425" columnWidth="186" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a63e28b-80ee-4b95-806d-18e378acb9a0">
-	<property name="ireport.zoom" value="1.9487171000000085"/>
+	<property name="ireport.zoom" value="3.452271214393117"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="9"/>
+	<property name="ireport.y" value="445"/>
 	<parameter name="getReceipt" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -25,7 +25,8 @@ receipt.`total` AS receipt_total,
 receipt.`amount` AS receipt_amount,
 receipt.`changes` AS receipt_changes,
 receipt.`date` AS receipt_date,
-receipt.`em_username` AS receipt_em_username
+receipt.`em_username` AS receipt_em_username,
+receipt.`customer_name` AS receipt_customer_name
 FROM
 `customer` customer INNER JOIN
 `receipt` receipt ON customer.`customer_id` = receipt.`customer_id` WHERE receipt.`customer_id` = $P{getReceipt}]]>
@@ -49,6 +50,7 @@ FROM
 	<field name="receipt_changes" class="java.lang.String"/>
 	<field name="receipt_date" class="java.sql.Date"/>
 	<field name="receipt_em_username" class="java.lang.String"/>
+	<field name="receipt_customer_name" class="java.lang.String"/>
 	<group name="total">
 		<groupExpression><![CDATA[$F{customer_id}]]></groupExpression>
 		<groupFooter>
@@ -67,13 +69,6 @@ FROM
 					</textElement>
 					<textFieldExpression><![CDATA[$F{receipt_total}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement x="0" y="9" width="79" height="15" uuid="ae252a61-f7e3-4bc4-9f52-998bd6e0f5ce"/>
-					<textElement>
-						<font size="11"/>
-					</textElement>
-					<text><![CDATA[Enjoy your meal]]></text>
-				</staticText>
 				<staticText>
 					<reportElement x="100" y="12" width="42" height="9" uuid="2d0eccbe-832f-4ed6-8b99-1aab0d99f7e2"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -120,6 +115,27 @@ FROM
 						<pen lineWidth="0.5" lineStyle="Solid"/>
 					</graphicElement>
 				</line>
+				<staticText>
+					<reportElement x="0" y="21" width="46" height="9" uuid="9330b96a-5bd5-462f-8410-c0a97dccff4d"/>
+					<textElement>
+						<font size="6"/>
+					</textElement>
+					<text><![CDATA[Customer : ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="5" width="46" height="9" uuid="ae252a61-f7e3-4bc4-9f52-998bd6e0f5ce"/>
+					<textElement>
+						<font size="6"/>
+					</textElement>
+					<text><![CDATA[Enjoy your meal]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="31" y="21" width="112" height="9" uuid="207ab83d-9cb2-45bb-bbb5-ebedabaf3be1"/>
+					<textElement>
+						<font size="6"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{receipt_customer_name}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupFooter>
 	</group>

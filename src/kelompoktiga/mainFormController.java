@@ -148,6 +148,9 @@ public class mainFormController implements Initializable {
     private TextField menu_amount;
 
     @FXML
+    private TextField menu_customer;
+
+    @FXML
     private Label menu_change;
 
     @FXML
@@ -199,6 +202,9 @@ public class mainFormController implements Initializable {
     private TableColumn<customersData, String> customers_col_total;
 
     @FXML
+    private TableColumn<customersData, String> customers_col_customer;
+
+    @FXML
     private AnchorPane customers_form;
 
     @FXML
@@ -232,6 +238,7 @@ public class mainFormController implements Initializable {
     private Image image;
 
     private ObservableList<productData> cardListData = FXCollections.observableArrayList();
+    
 
     public void dashboardDisplayNC() {
 
@@ -341,7 +348,7 @@ public class mainFormController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     public void dashboardCustomerChart() {
 
         dashboard_CustomerChart.getData().clear();
@@ -678,7 +685,7 @@ public class mainFormController implements Initializable {
 
     }
 
-    private String[] typeList = {"Meals", "Drinks"};
+    private String[] typeList = {"Meals", "Drinks", "Car"};
 
     public void inventoryTypeList() {
         List<String> typeL = new ArrayList<>();
@@ -691,7 +698,7 @@ public class mainFormController implements Initializable {
         inventory_type.setItems(listData);
     }
 
-    private String[] statusList = {"Available", "Unavailable"};
+    private String[] statusList = {"Available", "Unavailable", "Indent"};
 
     public void inventoryStatusList() {
         List<String> statusL = new ArrayList<>();
@@ -864,6 +871,7 @@ public class mainFormController implements Initializable {
 
     private double amount;
     private double change;
+    
 
     public void menuAmount() {
         menuGetTotal();
@@ -893,14 +901,15 @@ public class mainFormController implements Initializable {
             alert.setContentText("Please choose your order first!");
             alert.showAndWait();
         } else {
+            
             menuGetTotal();
-            String insertPay = "INSERT INTO receipt (customer_id, total, amount, changes, date, em_username)"
-                    + "VALUES(?,?,?,?,?,?)";
+            String insertPay = "INSERT INTO receipt (customer_id, total, amount, changes, date, em_username, customer_name)"
+                    + "VALUES(?,?,?,?,?,?,?)";
 
             connect = database.connectDB();
 
             try {
-
+                
                 if (amount == 0) {
                     alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error Message");
@@ -915,6 +924,7 @@ public class mainFormController implements Initializable {
                     Optional<ButtonType> option = alert.showAndWait();
 
                     if (option.get().equals(ButtonType.OK)) {
+                        
                         customerID();
                         menuGetTotal();
                         prepare = connect.prepareStatement(insertPay);
@@ -928,6 +938,7 @@ public class mainFormController implements Initializable {
 
                         prepare.setString(5, String.valueOf(sqlDate));
                         prepare.setString(6, data.username);
+                        prepare.setString(7, String.valueOf(menu_customer.getText()));
 
                         prepare.executeUpdate();
 
@@ -1078,7 +1089,8 @@ public class mainFormController implements Initializable {
                         result.getInt("customer_id"),
                         result.getDouble("total"),
                         result.getDate("date"),
-                        result.getString("em_username"));
+                        result.getString("em_username"),
+                        result.getString("customer_name"));
 
                 listData.add(cData);
             }
@@ -1098,6 +1110,7 @@ public class mainFormController implements Initializable {
         customers_col_total.setCellValueFactory(new PropertyValueFactory<>("total"));
         customers_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
         customers_col_cashier.setCellValueFactory(new PropertyValueFactory<>("emUsername"));
+        customers_col_customer.setCellValueFactory(new PropertyValueFactory<customersData, String>("customerName"));
 
         customers_tableView.setItems(customersListData);
 

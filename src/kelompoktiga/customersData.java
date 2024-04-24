@@ -17,13 +17,15 @@ public class customersData {
     private Double total;
     private Date date;
     private String emUsername;
+    private String customerName;
 
-    public customersData(Integer id, Integer customerID, Double total, Date date, String emUsername) {
+    public customersData(Integer id, Integer customerID, Double total, Date date, String emUsername, String customerName) {
         this.id = id;
         this.customerID = customerID;
         this.total = total;
         this.date = date;
         this.emUsername = emUsername;
+        this.customerName = customerName;
     }
 
     public Integer geId() {
@@ -44,5 +46,9 @@ public class customersData {
 
     public String getEmUsername() {
         return emUsername;
+    }
+    
+    public String getCustomerName() {
+        return customerName;
     }
 }
