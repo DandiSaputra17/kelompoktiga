@@ -684,7 +684,7 @@ public class mainFormController implements Initializable {
         inventory_imageView.setImage(image);
 
     }
-
+    // Dropdown list type 
     private String[] typeList = {"Meals", "Drinks", "Car"};
 
     public void inventoryTypeList() {
