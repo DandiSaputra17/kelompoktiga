@@ -871,7 +871,6 @@ public class mainFormController implements Initializable {
 
     private double amount;
     private double change;
-    
 
     public void menuAmount() {
         menuGetTotal();
