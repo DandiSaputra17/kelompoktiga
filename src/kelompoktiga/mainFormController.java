@@ -1137,7 +1137,23 @@ public class mainFormController implements Initializable {
 
     }
 
-    
+    public void dailyReportShowData() {
+
+            // Mendapatkan data pelanggan
+            customersListData = customersDataList();
+
+            // Menetapkan nilai properti dari tabel
+            daily_report_col_customerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+            daily_report_col_total.setCellValueFactory(new PropertyValueFactory<>("total"));
+            daily_report_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+            daily_report_col_cashier.setCellValueFactory(new PropertyValueFactory<>("emUsername"));
+            daily_report_col_customer.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+
+            // Menetapkan data pelanggan ke dalam tabel
+            daily_report_customer_tableView.setItems(customersListData);
+
+        
+    }
 
     // Switch Form
     public void switchForm(ActionEvent event) {
@@ -1190,7 +1206,7 @@ public class mainFormController implements Initializable {
             customers_form.setVisible(false);
             daily_report_form.setVisible(true);
 
-           // dailyReportShowData();
+            dailyReportShowData();
         }
     }
 
@@ -1257,7 +1273,7 @@ public class mainFormController implements Initializable {
 
         customersShowData();
 
-       // dailyReportShowData();
+        dailyReportShowData();
     }
 
 }
