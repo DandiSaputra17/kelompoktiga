@@ -1146,9 +1146,9 @@ public class mainFormController implements Initializable {
 
     public void menuSelectCustomer() {
         customersData cData = daily_report_customer_tableView.getSelectionModel().getSelectedItem();
-        int num = daily_report_customer_tableView.getSelectionModel().getSelectedIndex();
+        int numCus = daily_report_customer_tableView.getSelectionModel().getSelectedIndex();
 
-        if ((num - 1) < - 1) {
+        if ((numCus - 1) < - 1) {
             return;
         }
         // To get the pre order
@@ -1160,7 +1160,7 @@ public class mainFormController implements Initializable {
         Date date = new Date();
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
-        String sql = "SELECT SUM(total) FROM receipt WHERE date = '"
+        String sql = "SELECT * FROM receipt WHERE date = '"
                 + sqlDate + "'";
 
         connect = database.connectDB();
@@ -1188,35 +1188,49 @@ public class mainFormController implements Initializable {
     }
     
     public void menuRemoveCustomerBtn() {
-
-        if (getidcustomer == 0) {
-            alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Please select the order you want to remove");
-            alert.showAndWait();
-        } else {
-            String deleteData = "DELETE FROM receipt WHERE id = " + getidcustomer;
+    if (getidcustomer == 0) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error Message");
+        alert.setHeaderText(null);
+        alert.setContentText("Please select the order you want to remove");
+        alert.showAndWait();
+    } else {
+        Connection connect = null;
+        PreparedStatement prepare = null;
+        try {
+            String deleteData = "DELETE FROM receipt WHERE id = ?";
             connect = database.connectDB();
+            
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure you want to delete this order?");
+            Optional<ButtonType> option = alert.showAndWait();
+
+            if (option.isPresent() && option.get().equals(ButtonType.OK)) {
+                prepare = connect.prepareStatement(deleteData);
+                prepare.setInt(1, getidcustomer);
+                prepare.executeUpdate();
+            }
+
+            menuShowOrderData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             try {
-                alert = new Alert(AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Are you sure you want to delete this order?");
-                Optional<ButtonType> option = alert.showAndWait();
-
-                if (option.get().equals(ButtonType.OK)) {
-                    prepare = connect.prepareStatement(deleteData);
-                    prepare.executeUpdate();
+                if (prepare != null) {
+                    prepare.close();
                 }
-
-                menuShowOrderData();
+                if (connect != null) {
+                    connect.close();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
     }
+}
+
 
     // Switch Form
     public void switchForm(ActionEvent event) {
