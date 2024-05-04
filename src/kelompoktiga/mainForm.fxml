@@ -392,12 +392,12 @@
                                           <String fx:value="btn" />
                                        </styleClass>
                                     </Button>
-                                    <Label layoutX="55.0" layoutY="386.0" text="Customer :">
+                                    <Label layoutX="57.66666666666666" layoutY="385.99999999999994" text="Customer :" AnchorPane.bottomAnchor="158.0" AnchorPane.rightAnchor="175.66666666666666">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="menu_customer" layoutX="134.0" layoutY="383.0" onAction="#menuAmount" prefHeight="25.0" prefWidth="119.0" promptText="Customer" styleClass="textfield" stylesheets="@mainFormDesign.css" />
+                                    <TextField fx:id="menu_customer" layoutX="134.0" layoutY="383.0" onAction="#menuAmount" prefHeight="25.0" prefWidth="119.0" promptText="Customer" styleClass="textfield" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="154.33333333333326" AnchorPane.rightAnchor="51.999999999999986" />
                                  </children>
                               </AnchorPane>
                            </children>
