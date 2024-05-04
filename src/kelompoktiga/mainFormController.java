@@ -1188,49 +1188,35 @@ public class mainFormController implements Initializable {
     }
     
     public void menuRemoveCustomerBtn() {
-    if (getidcustomer == 0) {
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle("Error Message");
-        alert.setHeaderText(null);
-        alert.setContentText("Please select the order you want to remove");
-        alert.showAndWait();
-    } else {
-        Connection connect = null;
-        PreparedStatement prepare = null;
-        try {
-            String deleteData = "DELETE FROM receipt WHERE id = ?";
-            connect = database.connectDB();
-            
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation Message");
+
+        if (getidcustomer == 0) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
             alert.setHeaderText(null);
-            alert.setContentText("Are you sure you want to delete this order?");
-            Optional<ButtonType> option = alert.showAndWait();
-
-            if (option.isPresent() && option.get().equals(ButtonType.OK)) {
-                prepare = connect.prepareStatement(deleteData);
-                prepare.setInt(1, getidcustomer);
-                prepare.executeUpdate();
-            }
-
-            menuShowOrderData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
+            alert.setContentText("Please select the order you want to remove");
+            alert.showAndWait();
+        } else {
+            String deleteData = "DELETE FROM receipt WHERE id = " + getidcustomer;
+            connect = database.connectDB();
             try {
-                if (prepare != null) {
-                    prepare.close();
+                alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure you want to delete this order?");
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if (option.get().equals(ButtonType.OK)) {
+                    prepare = connect.prepareStatement(deleteData);
+                    prepare.executeUpdate();
                 }
-                if (connect != null) {
-                    connect.close();
-                }
+
+                menuShowOrderData();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    }
-}
 
+    }
 
     // Switch Form
     public void switchForm(ActionEvent event) {
