@@ -314,7 +314,7 @@
                               <Separator layoutX="14.0" layoutY="315.0" prefHeight="5.0" prefWidth="845.0" AnchorPane.bottomAnchor="283.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="menu_form" layoutX="127.0" layoutY="167.0" prefHeight="600.0" prefWidth="874.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="menu_form" layoutX="127.0" layoutY="167.0" prefHeight="600.0" prefWidth="874.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="14.0" layoutY="13.0" prefHeight="573.0" prefWidth="523.0" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="13.666666666666629" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="336.66666666666663" AnchorPane.topAnchor="13.333333333333258">
                                  <styleClass>
@@ -440,7 +440,7 @@
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <TableView fx:id="daily_report_customer_tableView" layoutX="15.0" layoutY="114.0" prefHeight="471.0" prefWidth="843.0" stylesheets="@mainFormDesign.css">
+                              <TableView fx:id="daily_report_customer_tableView" layoutX="15.0" layoutY="114.0" onMouseClicked="#menuSelectCustomer" prefHeight="471.0" prefWidth="843.0" stylesheets="@mainFormDesign.css">
                                 <columns>
                                   <TableColumn fx:id="daily_report_col_customerID" prefWidth="75.0" text="Customer ID" />
                                   <TableColumn fx:id="daily_report_col_total" prefWidth="75.0" text="Total" />
