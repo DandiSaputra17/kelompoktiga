@@ -11,11 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Observable;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -977,7 +975,7 @@ public class mainFormController implements Initializable {
                         alert = new Alert(AlertType.WARNING);
                         alert.setTitle("Information Message");
                         alert.setHeaderText(null);
-                        alert.setContentText("Cancalled");
+                        alert.setContentText("Cancelled");
                         alert.showAndWait();
                     }
                 }
@@ -1133,42 +1131,13 @@ public class mainFormController implements Initializable {
         customers_col_total.setCellValueFactory(new PropertyValueFactory<>("total"));
         customers_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
         customers_col_cashier.setCellValueFactory(new PropertyValueFactory<>("emUsername"));
-        customers_col_customer.setCellValueFactory(new PropertyValueFactory<customersData, String>("customerName"));
+        customers_col_customer.setCellValueFactory(new PropertyValueFactory<>("customerName"));
 
         customers_tableView.setItems(customersListData);
 
     }
 
-    public void dailyReportShowData() {
-        Date date = new Date();
-        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
-
-        String sql = "SELECT * FROM receipt WHERE date = '"
-                + sqlDate + "'";
-
-        connect = database.connectDB();
-
-        try {
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            // Mendapatkan data pelanggan
-            customersListData = customersDataList();
-
-            // Menetapkan nilai properti dari tabel
-            daily_report_col_customerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-            daily_report_col_total.setCellValueFactory(new PropertyValueFactory<>("total"));
-            daily_report_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
-            daily_report_col_cashier.setCellValueFactory(new PropertyValueFactory<>("emUsername"));
-            daily_report_col_customer.setCellValueFactory(new PropertyValueFactory<customersData, String>("customerName"));
-
-            // Menetapkan data pelanggan ke dalam tabel
-            daily_report_customer_tableView.setItems(customersListData);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    
 
     // Switch Form
     public void switchForm(ActionEvent event) {
@@ -1221,7 +1190,7 @@ public class mainFormController implements Initializable {
             customers_form.setVisible(false);
             daily_report_form.setVisible(true);
 
-            dailyReportShowData();
+           // dailyReportShowData();
         }
     }
 
@@ -1260,7 +1229,7 @@ public class mainFormController implements Initializable {
 
     public void displayUsername() {
         String user = data.username;
-        user = user.substring(0, 1).toUpperCase() + user.substring(1);
+        user = user.substring(0, 1).toUpperCase() + "" + user.substring(1);
 
         username.setText(user);
     }
@@ -1288,7 +1257,7 @@ public class mainFormController implements Initializable {
 
         customersShowData();
 
-        dailyReportShowData();
+       // dailyReportShowData();
     }
 
 }
