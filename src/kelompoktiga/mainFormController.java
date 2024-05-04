@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -228,6 +229,30 @@ public class mainFormController implements Initializable {
     @FXML
     private Label dashboard_totalI;
 
+    @FXML
+    private Button daily_report_btn;
+
+    @FXML
+    private AnchorPane daily_report_form;
+
+    @FXML
+    private TableColumn<customersData, String> daily_report_col_cashier;
+
+    @FXML
+    private TableColumn<customersData, String> daily_report_col_customer;
+
+    @FXML
+    private TableColumn<customersData, String> daily_report_col_customerID;
+
+    @FXML
+    private TableColumn<customersData, String> daily_report_col_date;
+
+    @FXML
+    private TableColumn<customersData, String> daily_report_col_total;
+
+    @FXML
+    private TableView<customersData> daily_report_customer_tableView;
+
     private Alert alert;
 
     private Connection connect;
@@ -238,7 +263,6 @@ public class mainFormController implements Initializable {
     private Image image;
 
     private ObservableList<productData> cardListData = FXCollections.observableArrayList();
-    
 
     public void dashboardDisplayNC() {
 
@@ -900,7 +924,7 @@ public class mainFormController implements Initializable {
             alert.setContentText("Please choose your order first!");
             alert.showAndWait();
         } else {
-            
+
             menuGetTotal();
             String insertPay = "INSERT INTO receipt (customer_id, total, amount, changes, date, em_username, customer_name)"
                     + "VALUES(?,?,?,?,?,?,?)";
@@ -908,7 +932,7 @@ public class mainFormController implements Initializable {
             connect = database.connectDB();
 
             try {
-                
+
                 if (amount == 0) {
                     alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error Message");
@@ -923,7 +947,7 @@ public class mainFormController implements Initializable {
                     Optional<ButtonType> option = alert.showAndWait();
 
                     if (option.get().equals(ButtonType.OK)) {
-                        
+
                         customerID();
                         menuGetTotal();
                         prepare = connect.prepareStatement(insertPay);
@@ -1115,6 +1139,37 @@ public class mainFormController implements Initializable {
 
     }
 
+    public void dailyReportShowData() {
+        Date date = new Date();
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+        String sql = "SELECT * FROM receipt WHERE date = '"
+                + sqlDate + "'";
+
+        connect = database.connectDB();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            // Mendapatkan data pelanggan
+            customersListData = customersDataList();
+
+            // Menetapkan nilai properti dari tabel
+            daily_report_col_customerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+            daily_report_col_total.setCellValueFactory(new PropertyValueFactory<>("total"));
+            daily_report_col_date.setCellValueFactory(new PropertyValueFactory<>("date"));
+            daily_report_col_cashier.setCellValueFactory(new PropertyValueFactory<>("emUsername"));
+            daily_report_col_customer.setCellValueFactory(new PropertyValueFactory<customersData, String>("customerName"));
+
+            // Menetapkan data pelanggan ke dalam tabel
+            daily_report_customer_tableView.setItems(customersListData);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // Switch Form
     public void switchForm(ActionEvent event) {
 
@@ -1123,6 +1178,7 @@ public class mainFormController implements Initializable {
             inventory_form.setVisible(false);
             menu_form.setVisible(false);
             customers_form.setVisible(false);
+            daily_report_form.setVisible(false);
 
             dashboardDisplayNC();
             dashboardDisplayTI();
@@ -1136,6 +1192,7 @@ public class mainFormController implements Initializable {
             inventory_form.setVisible(true);
             menu_form.setVisible(false);
             customers_form.setVisible(false);
+            daily_report_form.setVisible(false);
 
             inventoryTypeList();
             inventoryStatusList();
@@ -1145,6 +1202,7 @@ public class mainFormController implements Initializable {
             inventory_form.setVisible(false);
             menu_form.setVisible(true);
             customers_form.setVisible(false);
+            daily_report_form.setVisible(false);
 
             menuDisplayCard();
             menuDisplayTotal();
@@ -1154,7 +1212,16 @@ public class mainFormController implements Initializable {
             inventory_form.setVisible(false);
             menu_form.setVisible(false);
             customers_form.setVisible(true);
+            daily_report_form.setVisible(false);
             customersShowData();
+        } else if (event.getSource() == daily_report_btn) {
+            dashboard_form.setVisible(false);
+            inventory_form.setVisible(false);
+            menu_form.setVisible(false);
+            customers_form.setVisible(false);
+            daily_report_form.setVisible(true);
+
+            dailyReportShowData();
         }
     }
 
@@ -1220,6 +1287,8 @@ public class mainFormController implements Initializable {
         menuShowOrderData();
 
         customersShowData();
+
+        dailyReportShowData();
     }
 
 }
