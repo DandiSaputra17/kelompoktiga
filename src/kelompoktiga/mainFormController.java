@@ -1139,6 +1139,18 @@ public class mainFormController implements Initializable {
 
     public void dailyReportShowData() {
 
+        Date date = new Date();
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+        String sql = "SELECT SUM(total) FROM receipt WHERE date = '"
+                + sqlDate + "'";
+
+        connect = database.connectDB();
+        
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+            
             // Mendapatkan data pelanggan
             customersListData = customersDataList();
 
@@ -1151,6 +1163,10 @@ public class mainFormController implements Initializable {
 
             // Menetapkan data pelanggan ke dalam tabel
             daily_report_customer_tableView.setItems(customersListData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+            
 
         
     }
