@@ -250,6 +250,10 @@ public class mainFormController implements Initializable {
 
     @FXML
     private TableView<customersData> daily_report_customer_tableView;
+    
+    @FXML
+    private Button removeCustomerBtn;
+
 
     private Alert alert;
 
@@ -1134,7 +1138,21 @@ public class mainFormController implements Initializable {
         customers_col_customer.setCellValueFactory(new PropertyValueFactory<>("customerName"));
 
         customers_tableView.setItems(customersListData);
+        
 
+    }
+    
+    private int getidcustomer;
+
+    public void menuSelectCustomer() {
+        customersData cData = daily_report_customer_tableView.getSelectionModel().getSelectedItem();
+        int num = daily_report_customer_tableView.getSelectionModel().getSelectedIndex();
+
+        if ((num - 1) < - 1) {
+            return;
+        }
+        // To get the pre order
+        getidcustomer = cData.getId();
     }
 
     public void dailyReportShowData() {
@@ -1167,8 +1185,37 @@ public class mainFormController implements Initializable {
             e.printStackTrace();
         }
             
+    }
+    
+    public void menuRemoveCustomerBtn() {
 
-        
+        if (getidcustomer == 0) {
+            alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error Message");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select the order you want to remove");
+            alert.showAndWait();
+        } else {
+            String deleteData = "DELETE FROM receipt WHERE id = " + getidcustomer;
+            connect = database.connectDB();
+            try {
+                alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure you want to delete this order?");
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if (option.get().equals(ButtonType.OK)) {
+                    prepare = connect.prepareStatement(deleteData);
+                    prepare.executeUpdate();
+                }
+
+                menuShowOrderData();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     // Switch Form
