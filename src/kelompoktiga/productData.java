@@ -47,6 +47,7 @@ public class productData {
         this.date = date;
         this.quantity = quantity;
     }
+   
 
     public Integer getId() {
         return id;
