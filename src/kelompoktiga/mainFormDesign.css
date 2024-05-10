@@ -147,3 +147,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 .createtextfield:focused{
     -fx-border-color: #B16E34;
 }
+
+.search{
+    padding: 0 0 0 28px;
+}
