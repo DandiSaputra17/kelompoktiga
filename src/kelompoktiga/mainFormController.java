@@ -35,6 +35,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -250,10 +251,129 @@ public class mainFormController implements Initializable {
 
     @FXML
     private TableView<customersData> daily_report_customer_tableView;
-    
+
     @FXML
     private Button removeCustomerBtn;
 
+    @FXML
+    private Button addProducts_addBtn;
+
+    @FXML
+    private TextField addProducts_brand;
+
+    @FXML
+    private Button addProducts_btn;
+
+    @FXML
+    private TableColumn<?, ?> addProducts_col_brand;
+
+    @FXML
+    private TableColumn<?, ?> addProducts_col_price;
+
+    @FXML
+    private TableColumn<?, ?> addProducts_col_productId;
+
+    @FXML
+    private TableColumn<?, ?> addProducts_col_productName;
+
+    @FXML
+    private TableColumn<?, ?> addProducts_col_status;
+
+    @FXML
+    private TableColumn<?, ?> addProducts_col_type;
+
+    @FXML
+    private Button addProducts_deleteBtn;
+
+    @FXML
+    private AnchorPane addProducts_form;
+
+    @FXML
+    private ImageView addProducts_imageView;
+
+    @FXML
+    private Button addProducts_importBtn;
+
+    @FXML
+    private TextField addProducts_price;
+
+    @FXML
+    private TextField addProducts_productId;
+
+    @FXML
+    private TextField addProducts_productName;
+
+    @FXML
+    private ComboBox<?> addProducts_productType;
+
+    @FXML
+    private Button addProducts_resetBtn;
+
+    @FXML
+    private TextField addProducts_search;
+
+    @FXML
+    private ComboBox<?> addProducts_status;
+
+    @FXML
+    private TableView<?> addProducts_tableView;
+
+    @FXML
+    private Button addProducts_updateBtn;
+
+    @FXML
+    private TextField orders_amount;
+
+    @FXML
+    private Label orders_balance;
+
+    @FXML
+    private ComboBox<?> orders_brand;
+
+    @FXML
+    private Button orders_btn;
+
+    @FXML
+    private TableColumn<?, ?> orders_col_brand;
+
+    @FXML
+    private TableColumn<?, ?> orders_col_price;
+
+    @FXML
+    private TableColumn<?, ?> orders_col_productName;
+
+    @FXML
+    private TableColumn<?, ?> orders_col_quantity;
+
+    @FXML
+    private TableColumn<?, ?> orders_col_type;
+
+    @FXML
+    private AnchorPane orders_form;
+
+    @FXML
+    private Button orders_payBtn;
+
+    @FXML
+    private ComboBox<?> orders_productName;
+
+    @FXML
+    private ComboBox<?> orders_productsType;
+
+    @FXML
+    private Spinner<?> orders_quantity;
+
+    @FXML
+    private Button orders_receiptBtn;
+
+    @FXML
+    private Button orders_resetBtn;
+
+    @FXML
+    private TableView<?> orders_tableView;
+
+    @FXML
+    private Label orders_total;
 
     private Alert alert;
 
@@ -1138,10 +1258,9 @@ public class mainFormController implements Initializable {
         customers_col_customer.setCellValueFactory(new PropertyValueFactory<>("customerName"));
 
         customers_tableView.setItems(customersListData);
-        
 
     }
-    
+
     private int getidcustomer;
 
     public void menuSelectCustomer() {
@@ -1164,11 +1283,11 @@ public class mainFormController implements Initializable {
                 + sqlDate + "'";
 
         connect = database.connectDB();
-        
+
         try {
             prepare = connect.prepareStatement(sql);
             result = prepare.executeQuery();
-            
+
             // Mendapatkan data pelanggan
             customersListData = customersDataList();
 
@@ -1184,9 +1303,9 @@ public class mainFormController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-            
+
     }
-    
+
     public void menuRemoveCustomerBtn() {
 
         if (getidcustomer == 0) {
@@ -1227,6 +1346,8 @@ public class mainFormController implements Initializable {
             menu_form.setVisible(false);
             customers_form.setVisible(false);
             daily_report_form.setVisible(false);
+            addProducts_btn.setVisible(false);
+            orders_btn.setVisible(false);
 
             dashboardDisplayNC();
             dashboardDisplayTI();
@@ -1241,6 +1362,8 @@ public class mainFormController implements Initializable {
             menu_form.setVisible(false);
             customers_form.setVisible(false);
             daily_report_form.setVisible(false);
+            addProducts_btn.setVisible(false);
+            orders_btn.setVisible(false);
 
             inventoryTypeList();
             inventoryStatusList();
@@ -1251,6 +1374,8 @@ public class mainFormController implements Initializable {
             menu_form.setVisible(true);
             customers_form.setVisible(false);
             daily_report_form.setVisible(false);
+            addProducts_btn.setVisible(false);
+            orders_btn.setVisible(false);
 
             menuDisplayCard();
             menuDisplayTotal();
@@ -1261,6 +1386,8 @@ public class mainFormController implements Initializable {
             menu_form.setVisible(false);
             customers_form.setVisible(true);
             daily_report_form.setVisible(false);
+            addProducts_btn.setVisible(false);
+            orders_btn.setVisible(false);
             customersShowData();
         } else if (event.getSource() == daily_report_btn) {
             dashboard_form.setVisible(false);
@@ -1268,8 +1395,28 @@ public class mainFormController implements Initializable {
             menu_form.setVisible(false);
             customers_form.setVisible(false);
             daily_report_form.setVisible(true);
+            addProducts_btn.setVisible(false);
+            orders_btn.setVisible(false);
 
-            dailyReportShowData();
+            
+        } else if (event.getSource() == addProducts_btn) {
+            dashboard_form.setVisible(false);
+            inventory_form.setVisible(false);
+            menu_form.setVisible(false);
+            customers_form.setVisible(false);
+            daily_report_form.setVisible(false);
+            addProducts_btn.setVisible(true);
+            orders_btn.setVisible(false);
+
+        } else if (event.getSource() == orders_btn) {
+            dashboard_form.setVisible(false);
+            inventory_form.setVisible(false);
+            menu_form.setVisible(false);
+            customers_form.setVisible(false);
+            daily_report_form.setVisible(false);
+            addProducts_btn.setVisible(false);
+            orders_btn.setVisible(true);
+
         }
     }
 
