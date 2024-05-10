@@ -149,5 +149,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
 }
 
 .search{
-    padding: 0 0 0 28px;
+    -fx-background-color: transparent;
+    -fx-border-color: #673221;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #000000;
+    -fx-border-width: 1.5px;
+    -fx-padding: 0 0 0 28px;
+}
+
+.search:focused{
+    -fx-border-color: #B16E34;
 }
