@@ -466,7 +466,7 @@
                                     <String fx:value="radius" />
                                  </styleClass>
                                  <children>
-                                    <AnchorPane layoutX="88.0" layoutY="14.0" prefHeight="127.0" prefWidth="115.0" stylesheets="@mainFormDesign.css">
+                                    <AnchorPane fx:id="addProducts_imageView" layoutX="88.0" layoutY="14.0" prefHeight="127.0" prefWidth="115.0" stylesheets="@mainFormDesign.css">
                                        <styleClass>
                                           <String fx:value="white_bg" />
                                           <String fx:value="shadow" />
@@ -474,7 +474,7 @@
                                        </styleClass>
                                        <children>
                                           <ImageView fx:id="addProducts_imageView" fitHeight="127.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.3333333333333286" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="6.333333333333329" AnchorPane.topAnchor="0.0" />
-                                          <Button fx:id="addProducts_importBtn" layoutY="96.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="121.0" styleClass="signoutbtn" stylesheets="@mainFormDesign.css" text="Insert" />
+                                          <Button fx:id="addProducts_importBtn" layoutY="96.0" mnemonicParsing="false" onAction="#addSuppliersProductsImportImage" prefHeight="31.0" prefWidth="121.0" styleClass="signoutbtn" stylesheets="@mainFormDesign.css" text="Insert" />
                                        </children>
                                     </AnchorPane>
                                     <Label layoutX="39.666666666666664" layoutY="154.66666666666669" text="Supplier ID:" AnchorPane.bottomAnchor="391.3333333333333" AnchorPane.leftAnchor="39.666666666666664">
