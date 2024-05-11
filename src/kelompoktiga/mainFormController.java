@@ -293,7 +293,7 @@ public class mainFormController implements Initializable {
     private AnchorPane addProducts_form;
 
     @FXML
-    private ImageView addProducts_imageView;
+    private ImageView addSuppliersProducts_imageView;
     
 
     @FXML
@@ -325,6 +325,9 @@ public class mainFormController implements Initializable {
 
     @FXML
     private TableView<supplierData> addProducts_tableView;
+    
+    @FXML
+    private AnchorPane addProducts_imageView;
 
     @FXML
     private Button addProducts_updateBtn;
@@ -1352,7 +1355,7 @@ public class mainFormController implements Initializable {
     
     public void addProductsAdd(){
         
-        String sql = "INSERT INTO supplier (supplier_id, supplierName, type, brand, productName, price, status, image, date)";
+        String sql = "INSERT INTO supplier (supplier_id, supplierName, type, brand, productName, price, status, image, date) ";
         
     }
     
@@ -1365,9 +1368,9 @@ public class mainFormController implements Initializable {
         File file = open.showOpenDialog(main_form.getScene().getWindow());
         
         if(file != null){
-            data.path = file.getAbsolutePath();
+            getData.path = file.getAbsolutePath();
             image = new Image(file.toURI().toString(), 115, 127, false, true);
-            addProducts_imageView.setImage(image);
+            addSuppliersProducts_imageView.setImage(image);
         }
         
     }
