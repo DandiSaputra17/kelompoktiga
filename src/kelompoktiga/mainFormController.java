@@ -45,6 +45,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -265,22 +266,25 @@ public class mainFormController implements Initializable {
     private Button addProducts_btn;
 
     @FXML
-    private TableColumn<?, ?> addProducts_col_brand;
+    private TableColumn<supplierData, String> addProducts_col_brand;
 
     @FXML
-    private TableColumn<?, ?> addProducts_col_price;
+    private TableColumn<supplierData, String> addProducts_col_price;
 
     @FXML
-    private TableColumn<?, ?> addProducts_col_productId;
+    private TableColumn<supplierData, String> addProducts_col_supplierId;
 
     @FXML
-    private TableColumn<?, ?> addProducts_col_productName;
+    private TableColumn<supplierData, String> addProducts_col_productName;
 
     @FXML
-    private TableColumn<?, ?> addProducts_col_status;
+    private TableColumn<supplierData, String> addProducts_col_status;
 
     @FXML
-    private TableColumn<?, ?> addProducts_col_type;
+    private TableColumn<supplierData, String> addProducts_col_supplierName;
+
+    @FXML
+    private TableColumn<supplierData, String> addProducts_col_type;
 
     @FXML
     private Button addProducts_deleteBtn;
@@ -290,6 +294,7 @@ public class mainFormController implements Initializable {
 
     @FXML
     private ImageView addProducts_imageView;
+    
 
     @FXML
     private Button addProducts_importBtn;
@@ -302,6 +307,9 @@ public class mainFormController implements Initializable {
 
     @FXML
     private TextField addProducts_productName;
+    
+    @FXML
+    private TextField addProducts_supplierName;
 
     @FXML
     private ComboBox<?> addProducts_productType;
@@ -316,7 +324,7 @@ public class mainFormController implements Initializable {
     private ComboBox<?> addProducts_status;
 
     @FXML
-    private TableView<?> addProducts_tableView;
+    private TableView<supplierData> addProducts_tableView;
 
     @FXML
     private Button addProducts_updateBtn;
@@ -374,6 +382,9 @@ public class mainFormController implements Initializable {
 
     @FXML
     private Label orders_total;
+    
+    @FXML
+    private Button orders_addBtn;
 
     private Alert alert;
 
@@ -1336,6 +1347,76 @@ public class mainFormController implements Initializable {
         }
 
     }
+    
+    // Add supplier to database
+    
+    public void addProductsAdd(){
+        
+        String sql = "INSERT INTO supplier (supplier_id, supplierName, type, brand, productName, price, status, image, date)";
+        
+    }
+    
+    public void addSuppliersProductsImportImage(){
+        
+        FileChooser open = new FileChooser();
+        open.setTitle("Open Image File");
+        open.getExtensionFilters().add(new ExtensionFilter("Image File", "*jpg", "*png"));
+        
+        File file = open.showOpenDialog(main_form.getScene().getWindow());
+        
+        if(file != null){
+            data.path = file.getAbsolutePath();
+            image = new Image(file.toURI().toString(), 115, 127, false, true);
+            addProducts_imageView.setImage(image);
+        }
+        
+    }
+    
+    public ObservableList<supplierData> addSupplierListData(){
+        ObservableList<supplierData> supplierList = FXCollections.observableArrayList();
+        
+        String sql = "SELECT * FROM supplier";
+        connect = database.connectDB();
+        try {
+            
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+            supplierData suppD;
+            while(result.next()){
+                suppD = new supplierData(result.getInt("supplier_id"), 
+                        result.getString("supplierName"), 
+                        result.getString("type"), 
+                        result.getString("brand"), 
+                        result.getString("productName"), 
+                        result.getDouble("price"), 
+                        result.getString("status"), 
+                        result.getString("image"), 
+                        result.getDate("date"));
+                
+                supplierList.add(suppD);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return supplierList;
+    }
+    
+    private ObservableList<supplierData> addSupplierList;
+    public void addSuppliersShowListData(){
+        addSupplierList = addSupplierListData();
+        
+        addProducts_col_supplierId.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
+        addProducts_col_supplierName.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
+        addProducts_col_type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        addProducts_col_brand.setCellValueFactory(new PropertyValueFactory<>("brand"));
+        addProducts_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        addProducts_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        addProducts_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        
+        addProducts_tableView.setItems(addSupplierList);
+        
+    }
 
     // Switch Form
     public void switchForm(ActionEvent event) {
@@ -1346,8 +1427,8 @@ public class mainFormController implements Initializable {
             menu_form.setVisible(false);
             customers_form.setVisible(false);
             daily_report_form.setVisible(false);
-            addProducts_btn.setVisible(false);
-            orders_btn.setVisible(false);
+            addProducts_form.setVisible(false);
+            orders_form.setVisible(false);
 
             dashboardDisplayNC();
             dashboardDisplayTI();
@@ -1362,8 +1443,8 @@ public class mainFormController implements Initializable {
             menu_form.setVisible(false);
             customers_form.setVisible(false);
             daily_report_form.setVisible(false);
-            addProducts_btn.setVisible(false);
-            orders_btn.setVisible(false);
+            addProducts_form.setVisible(false);
+            orders_form.setVisible(false);
 
             inventoryTypeList();
             inventoryStatusList();
@@ -1374,8 +1455,8 @@ public class mainFormController implements Initializable {
             menu_form.setVisible(true);
             customers_form.setVisible(false);
             daily_report_form.setVisible(false);
-            addProducts_btn.setVisible(false);
-            orders_btn.setVisible(false);
+            addProducts_form.setVisible(false);
+            orders_form.setVisible(false);
 
             menuDisplayCard();
             menuDisplayTotal();
@@ -1386,8 +1467,8 @@ public class mainFormController implements Initializable {
             menu_form.setVisible(false);
             customers_form.setVisible(true);
             daily_report_form.setVisible(false);
-            addProducts_btn.setVisible(false);
-            orders_btn.setVisible(false);
+            addProducts_form.setVisible(false);
+            orders_form.setVisible(false);
             customersShowData();
         } else if (event.getSource() == daily_report_btn) {
             dashboard_form.setVisible(false);
@@ -1395,8 +1476,8 @@ public class mainFormController implements Initializable {
             menu_form.setVisible(false);
             customers_form.setVisible(false);
             daily_report_form.setVisible(true);
-            addProducts_btn.setVisible(false);
-            orders_btn.setVisible(false);
+            addProducts_form.setVisible(false);
+            orders_form.setVisible(false);
 
             
         } else if (event.getSource() == addProducts_btn) {
@@ -1405,8 +1486,9 @@ public class mainFormController implements Initializable {
             menu_form.setVisible(false);
             customers_form.setVisible(false);
             daily_report_form.setVisible(false);
-            addProducts_btn.setVisible(true);
-            orders_btn.setVisible(false);
+            addProducts_form.setVisible(true);
+            orders_form.setVisible(false);
+            addSuppliersShowListData();
 
         } else if (event.getSource() == orders_btn) {
             dashboard_form.setVisible(false);
@@ -1414,8 +1496,8 @@ public class mainFormController implements Initializable {
             menu_form.setVisible(false);
             customers_form.setVisible(false);
             daily_report_form.setVisible(false);
-            addProducts_btn.setVisible(false);
-            orders_btn.setVisible(true);
+            addProducts_form.setVisible(false);
+            orders_form.setVisible(true);
 
         }
     }
@@ -1484,6 +1566,8 @@ public class mainFormController implements Initializable {
         customersShowData();
 
         dailyReportShowData();
+        
+        addSuppliersShowListData();
     }
 
 }
