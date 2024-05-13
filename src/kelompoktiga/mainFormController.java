@@ -1394,15 +1394,21 @@ public class mainFormController implements Initializable {
                 java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
                 prepare.setString(9, String.valueOf(sqlDate));
-                
+
                 prepare.executeUpdate();
+
+                // To become update your tableview
+                addSuppliersShowListData();
+
+                // Clear the fields
+                addProductReset();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    public void addProductReset(){
+
+    public void addProductReset() {
         addProducts_productId.setText("");
         addProducts_supplierName.setText("");
         addProducts_productType.getSelectionModel().clearSelection();
@@ -1411,10 +1417,9 @@ public class mainFormController implements Initializable {
         addProducts_price.setText("");
         addProducts_status.getSelectionModel().clearSelection();
         addSuppliersProducts_imageView.setImage(null);
-        
+
         getData.path = "";
-        
-        
+
     }
 
     public void addSuppliersProductsImportImage() {
@@ -1431,6 +1436,30 @@ public class mainFormController implements Initializable {
             addSuppliersProducts_imageView.setImage(image);
         }
 
+    }
+
+    private String[] listType = {"Foods", "Drinks", "Dessert", "Snacks", "Others"};
+    public void addSuppliersListType(){
+        List<String> listT = new ArrayList<>();
+        
+        for(String data: listType){
+            listT.add(data);
+        }
+        
+        ObservableList listData = FXCollections.observableArrayList(listT);
+        addProducts_productType.setItems(listData);
+    }
+    
+    private String[] listStatus = {"Available", "Unavailable"};
+    public void addSuppliersListStatus(){
+        List<String> listS = new ArrayList<>();
+        
+        for(String data: listStatus){
+            listS.add(data);
+        }
+        
+        ObservableList listData = FXCollections.observableArrayList(listS);
+        addProducts_status.setItems(listData);
     }
 
     public ObservableList<supplierData> addSupplierListData() {
@@ -1478,6 +1507,26 @@ public class mainFormController implements Initializable {
 
         addProducts_tableView.setItems(addSupplierList);
 
+    }
+
+    public void addSuppliersSelect() {
+        supplierData suppD = addProducts_tableView.getSelectionModel().getSelectedItem();
+        int num = addProducts_tableView.getSelectionModel().getSelectedIndex();
+
+        if ((num - 1) < - 1) {
+            return;
+        }
+
+        addProducts_productId.setText(String.valueOf(suppD.getSupplierId()));
+        addProducts_supplierName.setText(suppD.getSupplierName());
+        addProducts_brand.setText(suppD.getBrand());
+        addProducts_productName.setText(suppD.getSupplierName());
+        addProducts_price.setText(String.valueOf(suppD.getPrice()));
+
+        String uri = "File:" + suppD.getImage();
+
+        image = new Image(uri, 115, 127, false, true);
+        addSuppliersProducts_imageView.setImage(image);
     }
 
     // Switch Form
@@ -1549,7 +1598,10 @@ public class mainFormController implements Initializable {
             daily_report_form.setVisible(false);
             addProducts_form.setVisible(true);
             orders_form.setVisible(false);
+            
             addSuppliersShowListData();
+            addSuppliersListStatus();
+            addSuppliersListType();
 
         } else if (event.getSource() == orders_btn) {
             dashboard_form.setVisible(false);
@@ -1629,6 +1681,8 @@ public class mainFormController implements Initializable {
         dailyReportShowData();
 
         addSuppliersShowListData();
+        addSuppliersListStatus();
+        addSuppliersListType();
     }
 
 }
