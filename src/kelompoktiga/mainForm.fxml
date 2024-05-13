@@ -492,7 +492,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="addProducts_productType" layoutX="119.0" layoutY="225.0" prefHeight="28.0" prefWidth="155.0" promptText="Choose" styleClass="createtextfield" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="313.0" AnchorPane.rightAnchor="17.66666666666663" />
+                                    <ComboBox fx:id="addProducts_productType" layoutX="119.0" layoutY="225.0" onAction="#addSuppliersListType" prefHeight="28.0" prefWidth="155.0" promptText="Choose" styleClass="createtextfield" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="313.0" AnchorPane.rightAnchor="17.66666666666663" />
                                     <Label layoutX="70.0" layoutY="259.6666666666667" text="Brand:" AnchorPane.bottomAnchor="286.3333333333333" AnchorPane.leftAnchor="70.0">
                                        <font>
                                           <Font size="14.0" />
@@ -505,8 +505,8 @@
                                        </font>
                                     </Label>
                                     <TextField fx:id="addProducts_productName" layoutX="119.0" layoutY="291.0" prefHeight="25.0" prefWidth="155.0" styleClass="textfield" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="247.0" AnchorPane.rightAnchor="17.66666666666663" />
-                                    <Button fx:id="addProducts_addBtn" layoutX="28.0" layoutY="404.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Add" AnchorPane.bottomAnchor="126.66666666666669" AnchorPane.leftAnchor="28.0" />
-                                    <Button fx:id="addProducts_resetBtn" layoutX="28.0" layoutY="453.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Reset" AnchorPane.bottomAnchor="77.66666666666669" AnchorPane.leftAnchor="28.0" />
+                                    <Button fx:id="addProducts_addBtn" layoutX="28.0" layoutY="404.0" mnemonicParsing="false" onAction="#addProductsAdd" prefHeight="35.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Add" AnchorPane.bottomAnchor="126.66666666666669" AnchorPane.leftAnchor="28.0" />
+                                    <Button fx:id="addProducts_resetBtn" layoutX="28.0" layoutY="453.0" mnemonicParsing="false" onAction="#addProductReset" prefHeight="35.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Reset" AnchorPane.bottomAnchor="77.66666666666669" AnchorPane.leftAnchor="28.0" />
                                     <Button fx:id="addProducts_updateBtn" layoutX="164.0" layoutY="404.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Update" AnchorPane.bottomAnchor="126.66666666666669" AnchorPane.rightAnchor="28.0" />
                                     <Button fx:id="addProducts_deleteBtn" layoutX="164.0" layoutY="453.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Delete" AnchorPane.bottomAnchor="77.66666666666669" AnchorPane.rightAnchor="28.0" />
                                     <Label layoutX="69.0" layoutY="329.0" text="Status:" AnchorPane.bottomAnchor="217.0" AnchorPane.leftAnchor="69.0">
@@ -514,7 +514,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="addProducts_status" layoutX="119.0" layoutY="325.0" prefHeight="28.0" prefWidth="155.0" promptText="Choose" styleClass="createtextfield" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="213.0" AnchorPane.rightAnchor="17.66666666666663" />
+                                    <ComboBox fx:id="addProducts_status" layoutX="119.0" layoutY="325.0" onAction="#addSuppliersListStatus" prefHeight="28.0" prefWidth="155.0" promptText="Choose" styleClass="createtextfield" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="213.0" AnchorPane.rightAnchor="17.66666666666663" />
                                     <Button fx:id="orders_btn" layoutX="41.0" layoutY="504.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="35.0" prefWidth="210.0" stylesheets="@mainFormDesign.css" text="Orders" AnchorPane.bottomAnchor="26.66666666666663">
                                        <styleClass>
                                           <String fx:value="btn" />
@@ -542,7 +542,7 @@
                                     <String fx:value="radius" />
                                  </styleClass>
                                  <children>
-                                    <TableView fx:id="addProducts_tableView" editable="true" layoutX="15.0" layoutY="84.0" prefHeight="473.0" prefWidth="501.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="8.666666666666686" AnchorPane.leftAnchor="14.666666666666686" AnchorPane.rightAnchor="15.000000000000057" AnchorPane.topAnchor="84.00000000000006">
+                                    <TableView fx:id="addProducts_tableView" editable="true" layoutX="15.0" layoutY="84.0" onMouseClicked="#addSuppliersSelect" prefHeight="473.0" prefWidth="501.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="8.666666666666686" AnchorPane.leftAnchor="14.666666666666686" AnchorPane.rightAnchor="15.000000000000057" AnchorPane.topAnchor="84.00000000000006">
                                       <columns>
                                         <TableColumn fx:id="addProducts_col_supplierId" prefWidth="120.0" text="Supplier ID" />
                                         <TableColumn fx:id="addProducts_col_supplierName" prefWidth="65.3333740234375" text="Supplier Name" />
