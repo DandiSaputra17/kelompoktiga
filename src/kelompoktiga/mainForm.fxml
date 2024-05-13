@@ -507,8 +507,8 @@
                                     <TextField fx:id="addProducts_productName" layoutX="119.0" layoutY="291.0" prefHeight="25.0" prefWidth="155.0" styleClass="textfield" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="247.0" AnchorPane.rightAnchor="17.66666666666663" />
                                     <Button fx:id="addProducts_addBtn" layoutX="28.0" layoutY="404.0" mnemonicParsing="false" onAction="#addProductsAdd" prefHeight="35.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Add" AnchorPane.bottomAnchor="126.66666666666669" AnchorPane.leftAnchor="28.0" />
                                     <Button fx:id="addProducts_resetBtn" layoutX="28.0" layoutY="453.0" mnemonicParsing="false" onAction="#addProductReset" prefHeight="35.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Reset" AnchorPane.bottomAnchor="77.66666666666669" AnchorPane.leftAnchor="28.0" />
-                                    <Button fx:id="addProducts_updateBtn" layoutX="164.0" layoutY="404.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Update" AnchorPane.bottomAnchor="126.66666666666669" AnchorPane.rightAnchor="28.0" />
-                                    <Button fx:id="addProducts_deleteBtn" layoutX="164.0" layoutY="453.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Delete" AnchorPane.bottomAnchor="77.66666666666669" AnchorPane.rightAnchor="28.0" />
+                                    <Button fx:id="addProducts_updateBtn" layoutX="164.0" layoutY="404.0" mnemonicParsing="false" onAction="#addSuppliersUpdate" prefHeight="35.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Update" AnchorPane.bottomAnchor="126.66666666666669" AnchorPane.rightAnchor="28.0" />
+                                    <Button fx:id="addProducts_deleteBtn" layoutX="164.0" layoutY="453.0" mnemonicParsing="false" onAction="#addSuppliersDelete" prefHeight="35.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Delete" AnchorPane.bottomAnchor="77.66666666666669" AnchorPane.rightAnchor="28.0" />
                                     <Label layoutX="69.0" layoutY="329.0" text="Status:" AnchorPane.bottomAnchor="217.0" AnchorPane.leftAnchor="69.0">
                                        <font>
                                           <Font size="14.0" />
@@ -556,7 +556,7 @@
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                        </columnResizePolicy>
                                     </TableView>
-                                    <TextField fx:id="addProducts_search" layoutX="15.0" layoutY="37.0" prefHeight="38.0" prefWidth="271.0" promptText="Search" styleClass="search" stylesheets="@mainFormDesign.css" AnchorPane.leftAnchor="15.0" />
+                                    <TextField fx:id="addProducts_search" layoutX="15.0" layoutY="37.0" onAction="#addSuppliersSearch" prefHeight="38.0" prefWidth="271.0" promptText="Search" styleClass="search" stylesheets="@mainFormDesign.css" AnchorPane.leftAnchor="15.0" />
                                     <ImageView layoutX="19.0" layoutY="44.0">
                                        <image>
                                           <Image url="@../images/search-line.png" />
