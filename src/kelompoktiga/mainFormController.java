@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -1321,28 +1323,36 @@ public class mainFormController implements Initializable {
 
     public void menuRemoveCustomerBtn() {
 
-        if (getidcustomer == 0) {
+        if (cID == 0) {
             alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
             alert.setContentText("Please select the order you want to remove");
             alert.showAndWait();
         } else {
-            String deleteData = "DELETE FROM receipt WHERE id = " + getidcustomer;
+            String deleteData = "DELETE FROM receipt WHERE customer_id = " + cID;
             connect = database.connectDB();
             try {
                 alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation Message");
                 alert.setHeaderText(null);
-                alert.setContentText("Are you sure you want to delete this order?");
+                alert.setContentText("Are you sure you want to delete this Customer?" + cID);
                 Optional<ButtonType> option = alert.showAndWait();
 
                 if (option.get().equals(ButtonType.OK)) {
                     prepare = connect.prepareStatement(deleteData);
                     prepare.executeUpdate();
+
+                    alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Delete");
+                    alert.showAndWait();
+
+                    dailyReportShowData();
+                    menuShowOrderData();
                 }
 
-                menuShowOrderData();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1376,36 +1386,161 @@ public class mainFormController implements Initializable {
                 alert.setContentText("Please fill all blank fields");
                 alert.showAndWait();
             } else {
+                // Check If Supplier ID already exist
+                String checkData = "SELECT supplier_id FROM supplier WHERE supplier_id = '"
+                        + addProducts_productId.getText() + "'";
 
-                prepare = connect.prepareStatement(sql);
-                prepare.setString(1, addProducts_productId.getText());
-                prepare.setString(2, addProducts_supplierName.getText());
-                prepare.setString(3, (String) addProducts_productType.getSelectionModel().getSelectedItem());
-                prepare.setString(4, addProducts_brand.getText());
-                prepare.setString(5, addProducts_productName.getText());
-                prepare.setString(6, addProducts_price.getText());
-                prepare.setString(7, (String) addProducts_status.getSelectionModel().getSelectedItem());
+                statement = connect.createStatement();
+                result = statement.executeQuery(sql);
 
-                String uri = getData.path;
-                uri = uri.replace("\\", "\\\\");
-                prepare.setString(8, uri);
+                if (result.next()) {
+                    alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Supplier ID: " + addProducts_productId.getText() + " already exist!");
+                    alert.showAndWait();
+                } else {
 
-                Date date = new Date();
-                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                    prepare = connect.prepareStatement(sql);
+                    prepare.setString(1, addProducts_productId.getText());
+                    prepare.setString(2, addProducts_supplierName.getText());
+                    prepare.setString(3, (String) addProducts_productType.getSelectionModel().getSelectedItem());
+                    prepare.setString(4, addProducts_brand.getText());
+                    prepare.setString(5, addProducts_productName.getText());
+                    prepare.setString(6, addProducts_price.getText());
+                    prepare.setString(7, (String) addProducts_status.getSelectionModel().getSelectedItem());
 
-                prepare.setString(9, String.valueOf(sqlDate));
+                    String uri = getData.path;
+                    uri = uri.replace("\\", "\\\\");
+                    prepare.setString(8, uri);
 
-                prepare.executeUpdate();
+                    Date date = new Date();
+                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
-                // To become update your tableview
-                addSuppliersShowListData();
+                    prepare.setString(9, String.valueOf(sqlDate));
 
-                // Clear the fields
-                addProductReset();
+                    prepare.executeUpdate();
+
+                    // To become update your tableview
+                    addSuppliersShowListData();
+
+                    // Clear the fields
+                    addProductReset();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void addSuppliersUpdate() {
+        String uri = getData.path;
+        uri = uri.replace("\\", "\\\\");
+
+        Date date = new Date();
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+        String sql = "UPDATE supplier SET supplierName = '"
+                + addProducts_supplierName.getText()
+                + "', type = '" + addProducts_productType.getSelectionModel().getSelectedItem()
+                + "', brand = '" + addProducts_brand.getText()
+                + "', productName = '" + addProducts_productName.getText()
+                + "', price = '" + addProducts_price.getText()
+                + "', status = '" + addProducts_status.getSelectionModel().getSelectedItem()
+                + "', image = '" + uri + "', date = '" + sqlDate + "' WHERE supplier_id = '"
+                + addProducts_productId.getText() + "'";
+        connect = database.connectDB();
+        try {
+            Alert alert;
+
+            if (addProducts_productId.getText().isEmpty()
+                    || addProducts_supplierName.getText().isEmpty()
+                    || addProducts_productType.getSelectionModel().getSelectedItem() == null
+                    || addProducts_brand.getText().isEmpty()
+                    || addProducts_productName.getText().isEmpty()
+                    || addProducts_price.getText().isEmpty()
+                    || addProducts_status.getSelectionModel().getSelectedItem() == null
+                    || getData.path == "") {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Please fill all blank fields");
+                alert.showAndWait();
+            } else {
+                alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure want to Update Supplier ID" + addProducts_productId.getText() + "?");
+
+                Optional<ButtonType> option = alert.showAndWait();
+                if (option.get().equals(ButtonType.OK)) {
+                    statement = connect.createStatement();
+                    statement.executeUpdate(sql);
+
+                    alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Update");
+                    alert.showAndWait();
+
+                    addSuppliersShowListData();
+                    addProductReset();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addSuppliersDelete() {
+
+        String sql = "DELETE FROM supplier WHERE supplier_id = '"
+                + addProducts_productId.getText() + "'";
+
+        connect = database.connectDB();
+
+        try {
+            Alert alert;
+
+            if (addProducts_productId.getText().isEmpty()
+                    || addProducts_supplierName.getText().isEmpty()
+                    || addProducts_productType.getSelectionModel().getSelectedItem() == null
+                    || addProducts_brand.getText().isEmpty()
+                    || addProducts_productName.getText().isEmpty()
+                    || addProducts_price.getText().isEmpty()
+                    || addProducts_status.getSelectionModel().getSelectedItem() == null
+                    || getData.path == "") {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Please fill all blank fields");
+                alert.showAndWait();
+            } else {
+
+                alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure want to Delete Supplier ID" + addProducts_productId.getText() + "?");
+
+                Optional<ButtonType> option = alert.showAndWait();
+                if (option.get().equals(ButtonType.OK)) {
+                    statement = connect.createStatement();
+                    statement.executeUpdate(sql);
+
+                    alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Delete");
+                    alert.showAndWait();
+
+                    addSuppliersShowListData();
+                    addProductReset();
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void addProductReset() {
@@ -1438,28 +1573,62 @@ public class mainFormController implements Initializable {
 
     }
 
-    private String[] listType = {"Foods", "Drinks", "Dessert", "Snacks", "Others"};
-    public void addSuppliersListType(){
+    private String[] listType = {"Foods", "Drinks", "Snacks", "Others"};
+
+    public void addSuppliersListType() {
         List<String> listT = new ArrayList<>();
-        
-        for(String data: listType){
+
+        for (String data : listType) {
             listT.add(data);
         }
-        
+
         ObservableList listData = FXCollections.observableArrayList(listT);
         addProducts_productType.setItems(listData);
     }
-    
+
     private String[] listStatus = {"Available", "Unavailable"};
-    public void addSuppliersListStatus(){
+
+    public void addSuppliersListStatus() {
         List<String> listS = new ArrayList<>();
-        
-        for(String data: listStatus){
+
+        for (String data : listStatus) {
             listS.add(data);
         }
-        
+
         ObservableList listData = FXCollections.observableArrayList(listS);
         addProducts_status.setItems(listData);
+    }
+    
+    public void addSuppliersSearch(){
+        FilteredList<supplierData> filter = new FilteredList<>(addSupplierList, e -> true);
+        addProducts_search.textProperty().addListener((Observable, oldValue, newValue) ->{
+            filter.setPredicate(predicateSupplierData -> {
+                if(newValue == null || newValue.isEmpty()){
+                    return true;
+                }
+                String searchKey = newValue.toLowerCase();
+                if(predicateSupplierData.getSupplierId().toString().contains(searchKey)){
+                    return true;
+                }else if(predicateSupplierData.getSupplierName().toLowerCase().contains(searchKey)){
+                    return true;
+                }else if(predicateSupplierData.getType().toLowerCase().contains(searchKey)){
+                    return true;
+                }else if(predicateSupplierData.getBrand().toLowerCase().contains(searchKey)){
+                    return true;
+                }else if(predicateSupplierData.getProductName().toLowerCase().contains(searchKey)){
+                    return true;
+                }else if(predicateSupplierData.getPrice().toString().contains(searchKey)){
+                    return true;
+                }else if(predicateSupplierData.getStatus().toLowerCase().contains(searchKey)){
+                    return true;
+                }else return false;
+            });
+        });
+        
+        SortedList<supplierData> sortList = new SortedList<>(filter);
+        
+        sortList.comparatorProperty().bind(addProducts_tableView.comparatorProperty());
+        addProducts_tableView.setItems(sortList);
     }
 
     public ObservableList<supplierData> addSupplierListData() {
@@ -1520,13 +1689,14 @@ public class mainFormController implements Initializable {
         addProducts_productId.setText(String.valueOf(suppD.getSupplierId()));
         addProducts_supplierName.setText(suppD.getSupplierName());
         addProducts_brand.setText(suppD.getBrand());
-        addProducts_productName.setText(suppD.getSupplierName());
+        addProducts_productName.setText(suppD.getProductName());
         addProducts_price.setText(String.valueOf(suppD.getPrice()));
 
         String uri = "File:" + suppD.getImage();
 
         image = new Image(uri, 115, 127, false, true);
         addSuppliersProducts_imageView.setImage(image);
+        getData.path = suppD.getImage();
     }
 
     // Switch Form
@@ -1598,10 +1768,11 @@ public class mainFormController implements Initializable {
             daily_report_form.setVisible(false);
             addProducts_form.setVisible(true);
             orders_form.setVisible(false);
-            
+
             addSuppliersShowListData();
-            addSuppliersListStatus();
             addSuppliersListType();
+            addSuppliersListStatus();
+            addSuppliersSearch();
 
         } else if (event.getSource() == orders_btn) {
             dashboard_form.setVisible(false);
@@ -1681,8 +1852,9 @@ public class mainFormController implements Initializable {
         dailyReportShowData();
 
         addSuppliersShowListData();
-        addSuppliersListStatus();
         addSuppliersListType();
+        addSuppliersListStatus();
+
     }
 
 }
