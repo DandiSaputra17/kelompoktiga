@@ -50,7 +50,7 @@ public class supplierData {
     public String getBrand(){
         return brand;
     }
-    public String productName(){
+    public String getProductName(){
         return productName;
     }
     public Double getPrice(){
