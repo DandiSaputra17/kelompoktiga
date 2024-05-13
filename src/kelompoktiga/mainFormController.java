@@ -294,7 +294,6 @@ public class mainFormController implements Initializable {
 
     @FXML
     private ImageView addSuppliersProducts_imageView;
-    
 
     @FXML
     private Button addProducts_importBtn;
@@ -307,7 +306,7 @@ public class mainFormController implements Initializable {
 
     @FXML
     private TextField addProducts_productName;
-    
+
     @FXML
     private TextField addProducts_supplierName;
 
@@ -325,7 +324,7 @@ public class mainFormController implements Initializable {
 
     @FXML
     private TableView<supplierData> addProducts_tableView;
-    
+
     @FXML
     private AnchorPane addProducts_imageView;
 
@@ -385,7 +384,7 @@ public class mainFormController implements Initializable {
 
     @FXML
     private Label orders_total;
-    
+
     @FXML
     private Button orders_addBtn;
 
@@ -1350,65 +1349,125 @@ public class mainFormController implements Initializable {
         }
 
     }
-    
+
     // Add supplier to database
-    
-    public void addProductsAdd(){
-        
-        String sql = "INSERT INTO supplier (supplier_id, supplierName, type, brand, productName, price, status, image, date) ";
-        
+    public void addProductsAdd() {
+
+        String sql = "INSERT INTO supplier (supplier_id, supplierName, type, brand, productName, price, status, image, date) "
+                + "VALUES(?,?,?,?,?,?,?,?,?)";
+
+        connect = database.connectDB();
+
+        try {
+
+            Alert alert;
+
+            if (addProducts_productId.getText().isEmpty()
+                    || addProducts_supplierName.getText().isEmpty()
+                    || addProducts_productType.getSelectionModel().getSelectedItem() == null
+                    || addProducts_brand.getText().isEmpty()
+                    || addProducts_productName.getText().isEmpty()
+                    || addProducts_price.getText().isEmpty()
+                    || addProducts_status.getSelectionModel().getSelectedItem() == null
+                    || getData.path == "") {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Please fill all blank fields");
+                alert.showAndWait();
+            } else {
+
+                prepare = connect.prepareStatement(sql);
+                prepare.setString(1, addProducts_productId.getText());
+                prepare.setString(2, addProducts_supplierName.getText());
+                prepare.setString(3, (String) addProducts_productType.getSelectionModel().getSelectedItem());
+                prepare.setString(4, addProducts_brand.getText());
+                prepare.setString(5, addProducts_productName.getText());
+                prepare.setString(6, addProducts_price.getText());
+                prepare.setString(7, (String) addProducts_status.getSelectionModel().getSelectedItem());
+
+                String uri = getData.path;
+                uri = uri.replace("\\", "\\\\");
+                prepare.setString(8, uri);
+
+                Date date = new Date();
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+                prepare.setString(9, String.valueOf(sqlDate));
+                
+                prepare.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
-    public void addSuppliersProductsImportImage(){
+    public void addProductReset(){
+        addProducts_productId.setText("");
+        addProducts_supplierName.setText("");
+        addProducts_productType.getSelectionModel().clearSelection();
+        addProducts_brand.setText("");
+        addProducts_productName.setText("");
+        addProducts_price.setText("");
+        addProducts_status.getSelectionModel().clearSelection();
+        addSuppliersProducts_imageView.setImage(null);
         
+        getData.path = "";
+        
+        
+    }
+
+    public void addSuppliersProductsImportImage() {
+
         FileChooser open = new FileChooser();
         open.setTitle("Open Image File");
         open.getExtensionFilters().add(new ExtensionFilter("Image File", "*jpg", "*png"));
-        
+
         File file = open.showOpenDialog(main_form.getScene().getWindow());
-        
-        if(file != null){
+
+        if (file != null) {
             getData.path = file.getAbsolutePath();
             image = new Image(file.toURI().toString(), 115, 127, false, true);
             addSuppliersProducts_imageView.setImage(image);
         }
-        
+
     }
-    
-    public ObservableList<supplierData> addSupplierListData(){
+
+    public ObservableList<supplierData> addSupplierListData() {
         ObservableList<supplierData> supplierList = FXCollections.observableArrayList();
-        
+
         String sql = "SELECT * FROM supplier";
         connect = database.connectDB();
         try {
-            
+
             prepare = connect.prepareStatement(sql);
             result = prepare.executeQuery();
             supplierData suppD;
-            while(result.next()){
-                suppD = new supplierData(result.getInt("supplier_id"), 
-                        result.getString("supplierName"), 
-                        result.getString("type"), 
-                        result.getString("brand"), 
-                        result.getString("productName"), 
-                        result.getDouble("price"), 
-                        result.getString("status"), 
-                        result.getString("image"), 
+            while (result.next()) {
+                suppD = new supplierData(result.getInt("supplier_id"),
+                        result.getString("supplierName"),
+                        result.getString("type"),
+                        result.getString("brand"),
+                        result.getString("productName"),
+                        result.getDouble("price"),
+                        result.getString("status"),
+                        result.getString("image"),
                         result.getDate("date"));
-                
+
                 supplierList.add(suppD);
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return supplierList;
     }
-    
+
     private ObservableList<supplierData> addSupplierList;
-    public void addSuppliersShowListData(){
+
+    public void addSuppliersShowListData() {
         addSupplierList = addSupplierListData();
-        
+
         addProducts_col_supplierId.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
         addProducts_col_supplierName.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
         addProducts_col_type.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -1416,9 +1475,9 @@ public class mainFormController implements Initializable {
         addProducts_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         addProducts_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
         addProducts_col_status.setCellValueFactory(new PropertyValueFactory<>("status"));
-        
+
         addProducts_tableView.setItems(addSupplierList);
-        
+
     }
 
     // Switch Form
@@ -1482,7 +1541,6 @@ public class mainFormController implements Initializable {
             addProducts_form.setVisible(false);
             orders_form.setVisible(false);
 
-            
         } else if (event.getSource() == addProducts_btn) {
             dashboard_form.setVisible(false);
             inventory_form.setVisible(false);
@@ -1569,7 +1627,7 @@ public class mainFormController implements Initializable {
         customersShowData();
 
         dailyReportShowData();
-        
+
         addSuppliersShowListData();
     }
 
