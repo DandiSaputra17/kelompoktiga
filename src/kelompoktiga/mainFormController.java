@@ -1391,7 +1391,7 @@ public class mainFormController implements Initializable {
                         + addProducts_productId.getText() + "'";
 
                 statement = connect.createStatement();
-                result = statement.executeQuery(sql);
+                result = statement.executeQuery(checkData);
 
                 if (result.next()) {
                     alert = new Alert(AlertType.ERROR);
