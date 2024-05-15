@@ -457,7 +457,7 @@
                               <Button fx:id="removeCustomerBtn" layoutX="725.0" layoutY="49.0" mnemonicParsing="false" onAction="#menuRemoveCustomerBtn" styleClass="btn" stylesheets="@mainFormDesign.css" text="Remove Customer" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="addProducts_form" layoutX="14.0" layoutY="14.0" prefHeight="600.0" prefWidth="874.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="addProducts_form" layoutX="14.0" layoutY="14.0" prefHeight="600.0" prefWidth="874.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="14.0" layoutY="17.0" prefHeight="566.0" prefWidth="292.0" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="16.66666666666663" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="17.0">
                                  <styleClass>
@@ -566,7 +566,7 @@
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="orders_form" prefHeight="600.0" prefWidth="874.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="orders_form" prefHeight="600.0" prefWidth="874.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane prefHeight="559.0" prefWidth="531.0" stylesheets="@mainFormDesign.css" AnchorPane.bottomAnchor="21.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="328.66666666666663" AnchorPane.topAnchor="20.0">
                                  <styleClass>
@@ -601,26 +601,26 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="orders_productName" layoutX="112.0" layoutY="52.0" prefHeight="28.0" prefWidth="170.0" promptText="Choose" styleClass="createtextfield" stylesheets="@mainFormDesign.css" AnchorPane.rightAnchor="17.333333333333314" AnchorPane.topAnchor="136.66666666666663" />
+                                    <ComboBox fx:id="orders_productName" layoutX="112.0" layoutY="52.0" onAction="#ordersListProductName" prefHeight="28.0" prefWidth="170.0" promptText="Choose" styleClass="createtextfield" stylesheets="@mainFormDesign.css" AnchorPane.rightAnchor="17.333333333333314" AnchorPane.topAnchor="136.66666666666663" />
                                     <Label layoutX="19.333333333333332" layoutY="99.0" text="Brand Name:" AnchorPane.rightAnchor="199.33333333333331" AnchorPane.topAnchor="99.0">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="orders_brand" layoutX="112.0" layoutY="95.0" prefHeight="28.0" prefWidth="170.0" promptText="Choose" styleClass="createtextfield" stylesheets="@mainFormDesign.css" AnchorPane.rightAnchor="17.333333333333314" AnchorPane.topAnchor="95.0" />
+                                    <ComboBox fx:id="orders_brand" layoutX="112.0" layoutY="95.0" onAction="#ordersListBrand" prefHeight="28.0" prefWidth="170.0" promptText="Choose" styleClass="createtextfield" stylesheets="@mainFormDesign.css" AnchorPane.rightAnchor="17.333333333333314" AnchorPane.topAnchor="95.0" />
                                     <Label layoutX="8.0" layoutY="141.0" text="Product Name:" AnchorPane.rightAnchor="198.66666666666663" AnchorPane.topAnchor="140.66666666666663">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox fx:id="orders_productsType" layoutX="112.0" layoutY="52.0" prefHeight="28.0" prefWidth="170.0" promptText="Choose" styleClass="createtextfield" stylesheets="@mainFormDesign.css" AnchorPane.rightAnchor="17.333333333333314" AnchorPane.topAnchor="51.99999999999994" />
-                                    <Spinner fx:id="orders_quantity" layoutX="112.0" layoutY="180.0" prefHeight="28.0" prefWidth="170.0" styleClass="textfield" stylesheets="@mainFormDesign.css" AnchorPane.rightAnchor="17.333333333333314" AnchorPane.topAnchor="179.99999999999994" />
+                                    <ComboBox fx:id="orders_productsType" layoutX="112.0" layoutY="52.0" onAction="#ordersListType" prefHeight="28.0" prefWidth="170.0" promptText="Choose" styleClass="createtextfield" stylesheets="@mainFormDesign.css" AnchorPane.rightAnchor="17.333333333333314" AnchorPane.topAnchor="51.99999999999994" />
+                                    <Spinner fx:id="orders_quantity" layoutX="112.0" layoutY="180.0" onMouseClicked="#ordersShowSpinnerValue" prefHeight="28.0" prefWidth="170.0" styleClass="textfield" stylesheets="@mainFormDesign.css" AnchorPane.rightAnchor="17.333333333333314" AnchorPane.topAnchor="179.99999999999994" />
                                     <Label layoutX="40.0" layoutY="184.0" text="Quantity:" AnchorPane.rightAnchor="202.66666666666666" AnchorPane.topAnchor="183.99999999999994">
                                        <font>
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="60.0" layoutY="265.0" stylesheets="@mainFormDesign.css" text="Total:" AnchorPane.bottomAnchor="272.3333333333333" AnchorPane.rightAnchor="202.66666666666666">
+                                    <Label layoutX="60.0" layoutY="265.0" stylesheets="@mainFormDesign.css" text="Total:">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -641,7 +641,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="orders_total" layoutX="108.0" layoutY="264.0" stylesheets="@mainFormDesign.css" text="RP.00" AnchorPane.bottomAnchor="273.3333333333333" AnchorPane.rightAnchor="153.99999999999997">
+                                    <Label fx:id="orders_total" layoutX="148.0" layoutY="265.0" stylesheets="@mainFormDesign.css" text="RP.00" AnchorPane.bottomAnchor="272.99999999999994" AnchorPane.rightAnchor="113.99999999999997">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -649,7 +649,7 @@
                                     <Button fx:id="orders_payBtn" layoutX="32.0" layoutY="436.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Pay" AnchorPane.bottomAnchor="77.33333333333329" AnchorPane.leftAnchor="32.0" />
                                     <Button fx:id="orders_receiptBtn" layoutX="167.0" layoutY="436.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Receipt" AnchorPane.bottomAnchor="77.33333333333331" AnchorPane.rightAnchor="32.333333333333314" />
                                     <Button fx:id="orders_resetBtn" layoutX="100.0" layoutY="499.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="100.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Reset" AnchorPane.bottomAnchor="14.999999999999922" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="99.33333333333331" />
-                                    <Button fx:id="orders_addBtn" layoutX="181.0" layoutY="219.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="86.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Add" />
+                                    <Button fx:id="orders_addBtn" layoutX="181.0" layoutY="219.0" mnemonicParsing="false" onAction="#ordersAdd" prefHeight="35.0" prefWidth="86.0" styleClass="btn" stylesheets="@mainFormDesign.css" text="Add" />
                                  </children>
                               </AnchorPane>
                            </children>

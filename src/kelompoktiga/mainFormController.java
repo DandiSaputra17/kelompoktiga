@@ -38,6 +38,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -346,19 +347,19 @@ public class mainFormController implements Initializable {
     private Button orders_btn;
 
     @FXML
-    private TableColumn<?, ?> orders_col_brand;
+    private TableColumn<ordersData, String> orders_col_brand;
 
     @FXML
-    private TableColumn<?, ?> orders_col_price;
+    private TableColumn<ordersData, String> orders_col_price;
 
     @FXML
-    private TableColumn<?, ?> orders_col_productName;
+    private TableColumn<ordersData, String> orders_col_productName;
 
     @FXML
-    private TableColumn<?, ?> orders_col_quantity;
+    private TableColumn<ordersData, String> orders_col_quantity;
 
     @FXML
-    private TableColumn<?, ?> orders_col_type;
+    private TableColumn<ordersData, String> orders_col_type;
 
     @FXML
     private AnchorPane orders_form;
@@ -373,7 +374,7 @@ public class mainFormController implements Initializable {
     private ComboBox<?> orders_productsType;
 
     @FXML
-    private Spinner<?> orders_quantity;
+    private Spinner<Integer> orders_quantity;
 
     @FXML
     private Button orders_receiptBtn;
@@ -382,7 +383,7 @@ public class mainFormController implements Initializable {
     private Button orders_resetBtn;
 
     @FXML
-    private TableView<?> orders_tableView;
+    private TableView<ordersData> orders_tableView;
 
     @FXML
     private Label orders_total;
@@ -1598,35 +1599,37 @@ public class mainFormController implements Initializable {
         ObservableList listData = FXCollections.observableArrayList(listS);
         addProducts_status.setItems(listData);
     }
-    
-    public void addSuppliersSearch(){
+
+    public void addSuppliersSearch() {
         FilteredList<supplierData> filter = new FilteredList<>(addSupplierList, e -> true);
-        addProducts_search.textProperty().addListener((Observable, oldValue, newValue) ->{
+        addProducts_search.textProperty().addListener((Observable, oldValue, newValue) -> {
             filter.setPredicate(predicateSupplierData -> {
-                if(newValue == null || newValue.isEmpty()){
+                if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
                 String searchKey = newValue.toLowerCase();
-                if(predicateSupplierData.getSupplierId().toString().contains(searchKey)){
+                if (predicateSupplierData.getSupplierId().toString().contains(searchKey)) {
                     return true;
-                }else if(predicateSupplierData.getSupplierName().toLowerCase().contains(searchKey)){
+                } else if (predicateSupplierData.getSupplierName().toLowerCase().contains(searchKey)) {
                     return true;
-                }else if(predicateSupplierData.getType().toLowerCase().contains(searchKey)){
+                } else if (predicateSupplierData.getType().toLowerCase().contains(searchKey)) {
                     return true;
-                }else if(predicateSupplierData.getBrand().toLowerCase().contains(searchKey)){
+                } else if (predicateSupplierData.getBrand().toLowerCase().contains(searchKey)) {
                     return true;
-                }else if(predicateSupplierData.getProductName().toLowerCase().contains(searchKey)){
+                } else if (predicateSupplierData.getProductName().toLowerCase().contains(searchKey)) {
                     return true;
-                }else if(predicateSupplierData.getPrice().toString().contains(searchKey)){
+                } else if (predicateSupplierData.getPrice().toString().contains(searchKey)) {
                     return true;
-                }else if(predicateSupplierData.getStatus().toLowerCase().contains(searchKey)){
+                } else if (predicateSupplierData.getStatus().toLowerCase().contains(searchKey)) {
                     return true;
-                }else return false;
+                } else {
+                    return false;
+                }
             });
         });
-        
+
         SortedList<supplierData> sortList = new SortedList<>(filter);
-        
+
         sortList.comparatorProperty().bind(addProducts_tableView.comparatorProperty());
         addProducts_tableView.setItems(sortList);
     }
@@ -1697,6 +1700,286 @@ public class mainFormController implements Initializable {
         image = new Image(uri, 115, 127, false, true);
         addSuppliersProducts_imageView.setImage(image);
         getData.path = suppD.getImage();
+    }
+
+    public void ordersAdd() {
+        customerId();
+        String sql = "INSERT INTO orders (customer_id, type, brand, productName, quantity, price, date)"
+                + "VALUES(?,?,?,?,?,?,?)";
+
+        connect = database.connectDB();
+
+        try {
+
+            String checkData = "SELECT * FROM supplier WHERE productName = '"
+                    + orders_productName.getSelectionModel().getSelectedItem() + "'";
+
+            double priceData = 0;
+
+            statement = connect.createStatement();
+            result = statement.executeQuery(checkData);
+
+            if (result.next()) {
+                priceData = result.getDouble("price");
+            }
+
+            double totalPData = (priceData * qty);
+
+            Alert alert;
+            if (orders_productsType.getSelectionModel().getSelectedItem() == null
+                    || (String) orders_brand.getSelectionModel().getSelectedItem() == null
+                    || (String) orders_productName.getSelectionModel().getSelectedItem() == null
+                    || totalPData == 0) {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Please choose product first");
+                alert.showAndWait();
+            } else {
+
+                prepare = connect.prepareStatement(sql);
+                prepare.setString(1, String.valueOf(customerid));
+                prepare.setString(2, (String) orders_productsType.getSelectionModel().getSelectedItem());
+                prepare.setString(3, (String) orders_brand.getSelectionModel().getSelectedItem());
+                prepare.setString(4, (String) orders_productName.getSelectionModel().getSelectedItem());
+                prepare.setString(5, String.valueOf(qty));
+
+                prepare.setString(6, String.valueOf(totalPData));
+
+                Date date = new Date();
+                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                prepare.setString(7, String.valueOf(sqlDate));
+
+                prepare.executeUpdate();
+
+                ordersShowListData();
+                ordersDisplayTotal();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void ordersPay() {
+        customerId();
+        String sql = "INSERT INTO supplier_receipt (total,date) WHERE supplier_id = '" + customerid + "'";
+
+        connect = database.connectDB();
+
+        try {
+            Alert alert;
+            if (totalO > 0) {
+                alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Are you sure?");
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if (option.get().equals(ButtonType.OK)) {
+                    prepare = connect.prepareStatement(sql);
+                    prepare.setString(1, String.valueOf(totalO));
+
+                    Date date = new Date();
+                    java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                    prepare.setString(2, String.valueOf(sqlDate));
+                    
+                    prepare.executeUpdate();
+                }
+
+            } else {
+                alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setHeaderText(null);
+                alert.setContentText("Invalid!");
+                alert.showAndWait();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private double totalO;
+
+    public void ordersDisplayTotal() {
+        customerId();
+        String sql = "SELECT SUM(price) FROM orders WHERE customer_id = '" + customerid + "'";
+
+        connect = database.connectDB();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                totalO = result.getDouble("SUM(price)");
+            }
+
+            orders_total.setText("    Rp. " + String.valueOf(totalO));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private String[] orderListType = {"Foods", "Drinks", "Snacks", "Others"};
+
+    public void ordersListType() {
+        List<String> listT = new ArrayList<>();
+
+        for (String data : orderListType) {
+            listT.add(data);
+        }
+
+        ObservableList listData = FXCollections.observableArrayList(listT);
+        orders_productsType.setItems(listData);
+
+        ordersListBrand();
+    }
+
+    public void ordersListBrand() {
+        String sql = "SELECT brand FROM supplier WHERE type = '"
+                + orders_productsType.getSelectionModel().getSelectedItem()
+                + "' and status = 'Available'";
+
+        connect = database.connectDB();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            ObservableList listData = FXCollections.observableArrayList();
+
+            while (result.next()) {
+                listData.add(result.getString("brand"));
+            }
+            orders_brand.setItems(listData);
+
+            ordersListProductName();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void ordersListProductName() {
+        String sql = "SELECT productName FROM supplier WHERE brand = '"
+                + orders_brand.getSelectionModel().getSelectedItem() + "'";
+
+        connect = database.connectDB();
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            ObservableList listData = FXCollections.observableArrayList();
+
+            while (result.next()) {
+                listData.add(result.getString("productName"));
+            }
+            orders_productName.setItems(listData);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private SpinnerValueFactory<Integer> spinner;
+
+    public void ordersSpinner() {
+
+        spinner = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
+
+        orders_quantity.setValueFactory(spinner);
+
+    }
+    private int qty;
+
+    public void ordersShowSpinnerValue() {
+        qty = orders_quantity.getValue();
+    }
+
+    public ObservableList<ordersData> ordersListData() {
+        customerId();
+        ObservableList<ordersData> listData = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM orders WHERE customer_id = '"
+                + customerid + "'";
+
+        connect = database.connectDB();
+
+        try {
+            ordersData ordersD;
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                ordersD = new ordersData(result.getInt("customer_id"),
+                        result.getString("type"),
+                        result.getString("brand"),
+                        result.getString("productName"),
+                        result.getInt("quantity"),
+                        result.getDouble("price"),
+                        result.getDate("date"));
+                listData.add(ordersD);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listData;
+    }
+
+    private ObservableList<ordersData> ordersList;
+
+    public void ordersShowListData() {
+        ordersList = ordersListData();
+
+        orders_col_type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        orders_col_brand.setCellValueFactory(new PropertyValueFactory<>("brand"));
+        orders_col_productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        orders_col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        orders_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        orders_tableView.setItems(ordersList);
+        ordersDisplayTotal();
+    }
+
+    private int customerid;
+
+    public void customerId() {
+
+        String customId = "";
+
+        connect = database.connectDB();
+
+        try {
+            prepare = connect.prepareStatement(customId);
+            result = prepare.executeQuery();
+
+            int checkId = 0;
+
+            while (result.next()) {
+                // Get last customer Id
+                customerid = result.getInt("customer_id");
+            }
+
+            String checkData = "SELECT * FROM supplier_receipt";
+
+            statement = connect.createStatement();
+            result = statement.executeQuery(checkData);
+
+            while (result.next()) {
+                checkId = result.getInt("customer_id");
+            }
+
+            if (customerid == 0) {
+                customerid += 1;
+            } else if (checkId == customerid) {
+                customerid += 1;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Switch Form
@@ -1783,6 +2066,12 @@ public class mainFormController implements Initializable {
             addProducts_form.setVisible(false);
             orders_form.setVisible(true);
 
+            ordersShowListData();
+            ordersListType();
+            ordersListBrand();
+            ordersListProductName();
+            ordersSpinner();
+            ordersDisplayTotal();
         }
     }
 
@@ -1855,6 +2144,12 @@ public class mainFormController implements Initializable {
         addSuppliersListType();
         addSuppliersListStatus();
 
+        ordersShowListData();
+        ordersListType();
+        ordersListBrand();
+        ordersListProductName();
+        ordersSpinner();
+        ordersDisplayTotal();
     }
 
 }
