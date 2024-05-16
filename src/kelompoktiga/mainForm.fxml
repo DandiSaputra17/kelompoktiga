@@ -625,7 +625,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="orders_balance" layoutX="109.0" layoutY="340.0" stylesheets="@mainFormDesign.css" text="RP.00" AnchorPane.bottomAnchor="198.66666666666663" AnchorPane.rightAnchor="152.99999999999997">
+                                    <Label fx:id="orders_balance" layoutX="109.0" layoutY="340.0" prefHeight="21.0" prefWidth="171.0" stylesheets="@mainFormDesign.css" text="RP.00" AnchorPane.bottomAnchor="199.0" AnchorPane.rightAnchor="19.0">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -641,7 +641,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="orders_total" layoutX="148.0" layoutY="265.0" stylesheets="@mainFormDesign.css" text="RP.00" AnchorPane.bottomAnchor="272.99999999999994" AnchorPane.rightAnchor="113.99999999999997">
+                                    <Label fx:id="orders_total" layoutX="148.0" layoutY="265.0" prefHeight="21.0" prefWidth="133.0" stylesheets="@mainFormDesign.css" text="RP.00" AnchorPane.bottomAnchor="273.0" AnchorPane.rightAnchor="18.0">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
